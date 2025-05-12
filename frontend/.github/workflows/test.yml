@@ -1,0 +1,40 @@
+name: Run Full Stack Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-and-frontend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🧰 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 📦 Install Backend Dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: 🧪 Run Backend Tests
+        run: |
+          cd backend
+          NODE_OPTIONS=--experimental-vm-modules npm test
+
+      - name: 📦 Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: 🧪 Run Frontend Tests
+        run: |
+          cd frontend
+          npm test -- --watchAll=false
