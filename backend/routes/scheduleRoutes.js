@@ -6,6 +6,22 @@ import Kund from '../models/Kund.js';
 import Employee from '../models/Employee.js';
 
 const router = express.Router();
+// --- ADD THIS ROUTE ---
+router.get('/:id', async (req, res) => {
+  try {
+    const schedule = await Schedule.findById(req.params.id)
+      .populate('customerId')
+      .populate('staffId');
+    if (!schedule) {
+      return res.status(404).json({ message: 'Schema hittades inte.' });
+    }
+    res.status(200).json(schedule);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Serverfel vid hämtning av schemat.' });
+  }
+});
+// --- END OF ROUTE ---
 
 // Hämta alla scheman
 router.get('/', async (req, res) => {
@@ -56,6 +72,9 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// --- Old Delete
+
+/*
 // Radera schema
 router.delete('/:id', async (req, res) => {
   try {
@@ -65,5 +84,22 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+*/
+
+// --- New Delete
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const schedule = await Schedule.findByIdAndDelete(req.params.id);
+    if (!schedule) {
+      return res.status(404).json({ message: 'Schema hittades inte.' });
+    }
+    res.status(200).json({ message: 'Schema raderat.' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 export default router;

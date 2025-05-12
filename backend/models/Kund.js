@@ -14,7 +14,7 @@ const effortDetailSchema = new mongoose.Schema({
 const kundSchema = new mongoose.Schema({
   name: { type: String, required: true },
   gender: String,
-  birthdate: String,
+  personnummer: { type: String, required: true, unique: true }, // Personnummer eller samordningsnummer
   phone: String,
   language: String,
   address: String,
