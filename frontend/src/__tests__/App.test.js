@@ -1,8 +1,14 @@
-// frontend/src/__tests__/App.test.js
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 
-test('renders header text', () => {
-  render(<App />);
-  expect(screen.getByText(/Welcome/i)).toBeInTheDocument();
+test('renders home page with header', () => {
+  render(
+    <MemoryRouter initialEntries={['/']}>
+      <App />
+    </MemoryRouter>
+  );
+
+  // Match the header text in Home.js
+  expect(screen.getByText(/schemaläggningssystem/i)).toBeInTheDocument();
 });
